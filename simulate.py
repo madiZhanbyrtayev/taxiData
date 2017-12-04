@@ -15,14 +15,15 @@ if __name__ == "__main__":
 
 	#  Trips are a tuple of ([long, lat], [long, lat], travel_time, distance, fare)
 	for i in range(1440):
+		print(i)
 		d.timestep(i // 60, trips_per_min[i])
 		while len(taxis) < num_taxis and len(d.trips) > 0:
 			trip = d.trips.pop(0)
-			taxis.add(Taxi(trip[0], 600, 700))
+			taxis.append(Taxi(trip[0], 600, 700))
 
 		for taxi in taxis:
 			taxi.timestep()
-			if taxi.is_idle():
+			if taxi.is_idle() and len(d.trips) > 0:
 				trip = d.dispatch_trip(taxi.coords)
 
 	db.close()

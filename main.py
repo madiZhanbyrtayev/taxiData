@@ -3,6 +3,7 @@ import pandas as p
 from pg import DB
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
+import random
 import datetime as dt
 
 # Functions
@@ -57,21 +58,23 @@ def create_table(database):
 def draw_pickup_locations(databaseQuery):
     result = databaseQuery.getresult()
     print(len(result))
-    map = Basemap(projection='merc', lat_0=40.730610, lon_0=-73.935242, resolution='i',
-                  llcrnrlon=-74.157112, llcrnrlat=40.617463,
-                  urcrnrlon=-73.678879, urcrnrlat=40.940936
-                  );
-    map.drawcoastlines()
-    map.drawcountries()
-    map.fillcontinents(color='coral')
-    map.drawmapboundary()
+    # map = Basemap(projection='merc', lat_0=40.730610, lon_0=-73.935242, resolution='i',
+    #               llcrnrlon=-74.157112, llcrnrlat=40.617463,
+    #               urcrnrlon=-73.678879, urcrnrlat=40.940936
+    #               );
+    # map.drawcoastlines()
+    # map.drawcountries()
+    # map.fillcontinents(color='coral')
+    # map.drawmapboundary()
 
-
-    for i in range (0, len(result)):
-        item = result[i]
-        x, y = map(item[5], item[6])
-        map.plot(x,y, 'bo', markersize=0.1);
-    plt.show()
+    result = random.sample(result, 10000)
+    print(result[0][1])
+    # for i in range (0, len(result)):
+    #     item = result[i]
+    #     x, y = map(item[5], item[6])
+    #     map.plot(x,y, 'bo', markersize=0.1);
+    #     if i % 1000 == 0: print(i, "/", len(result))
+    # plt.show()
     return 0;
 
 def draw_dropoff_locations(databaseQuery):
@@ -156,18 +159,18 @@ db = DB(dbname='sust_comp_db', host='localhost',
 
 #Check results
 # print(data)
-print(db.get_tables())
+#print(db.get_tables())
 #print(db.get_attnames('trips'))
-print("\nSpatial Data:")
-print(db.get_attnames('spatial_data'))
+#print("\nSpatial Data:")
+#print(db.get_attnames('spatial_data'))
 #db.query("drop table trips")
-query = query_pickup_by_time(from_day=15, to_day=18, from_time= 0, to_time=23, database=db);
+#query = query_pickup_by_time(from_day=15, to_day=18, from_time= 0, to_time=23, database=db);
 #query = query_pickup_by_day(15, db);
 
 #query = query_all_data(db, 1);
 #print(query)
 
-draw_pickup_locations(query)
+#draw_pickup_locations(query)
 
 
-db.close();
+#db.close()
